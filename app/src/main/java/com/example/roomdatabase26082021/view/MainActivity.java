@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,10 +28,24 @@ public class MainActivity extends AppCompatActivity {
         mWordViewModel.getWords().observe(this, new Observer<List<WordEntity>>() {
             @Override
             public void onChanged(List<WordEntity> wordEntities) {
-                Toast.makeText(MainActivity.this, wordEntities.size() + "", Toast.LENGTH_SHORT).show();
+                Log.d("BBB",wordEntities.size() + "");
+                mWordViewModel.compositeDisposable.dispose();
+            }
+        });
+
+        mWordViewModel.getIdInsert().observe(this, new Observer<Long>() {
+            @Override
+            public void onChanged(Long aLong) {
+                Log.d("BBB","Id insert " + aLong);
             }
         });
 
         mWordViewModel.queryListWords();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mWordViewModel.insertWord(new WordEntity("Four","Bốn"));
+            }
+        },2000);
     }
 }

@@ -14,6 +14,7 @@ import com.example.roomdatabase26082021.repository.WordRepository;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.MaybeObserver;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -22,9 +23,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class WordViewModel extends AndroidViewModel {
     private MutableLiveData<List<WordEntity>> lstWords = new MutableLiveData<>();
+    private MutableLiveData<Long> idInsert = new MutableLiveData<>();
     private MutableLiveData<Throwable> error = new MutableLiveData<>();
     private WordRepository wordRepository;
-    private CompositeDisposable compositeDisposable;
+    public CompositeDisposable compositeDisposable;
 
     public WordViewModel(@NonNull Application application) {
         super(application);
@@ -32,10 +34,15 @@ public class WordViewModel extends AndroidViewModel {
         compositeDisposable = new CompositeDisposable();
     }
 
-    public LiveData<List<WordEntity>> getWords(){
+    public LiveData<List<WordEntity>> getWords() {
         return lstWords;
     }
-    public void queryListWords(){
+
+    public LiveData<Long> getIdInsert() {
+        return idInsert;
+    }
+
+    public void queryListWords() {
         wordRepository.getListWords()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -49,6 +56,33 @@ public class WordViewModel extends AndroidViewModel {
                     @Override
                     public void onNext(@NonNull List<WordEntity> wordEntities) {
                         lstWords.setValue(wordEntities);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        error.setValue(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void insertWord(WordEntity wordEntity) {
+        wordRepository.insertWord(wordEntity)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MaybeObserver<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Long aLong) {
+                        idInsert.setValue(aLong);
                     }
 
                     @Override

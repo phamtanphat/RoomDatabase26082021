@@ -11,6 +11,7 @@ import com.example.roomdatabase26082021.database.entities.WordEntity;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Maybe;
 
 public class WordRepository {
     private WordDao wordDao;
@@ -21,5 +22,9 @@ public class WordRepository {
 
     public Flowable<List<WordEntity>> getListWords(){
         return wordDao.getListWords();
+    }
+
+    public Maybe<Long> insertWord(WordEntity wordEntity){
+        return wordDao.insertWord(wordEntity);
     }
 }
