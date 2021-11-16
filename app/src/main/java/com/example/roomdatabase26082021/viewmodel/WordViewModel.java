@@ -22,6 +22,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class WordViewModel extends AndroidViewModel {
     private MutableLiveData<List<WordEntity>> lstWords = new MutableLiveData<>();
+    private MutableLiveData<Throwable> error = new MutableLiveData<>();
     private WordRepository wordRepository;
     private CompositeDisposable compositeDisposable;
 
@@ -35,16 +36,30 @@ public class WordViewModel extends AndroidViewModel {
         return lstWords;
     }
     public void queryListWords(){
-        compositeDisposable.add(wordRepository.getListWords()
+        wordRepository.getListWords()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toObservable()
-                .subscribe(new Consumer<List<WordEntity>>() {
+                .subscribe(new Observer<List<WordEntity>>() {
                     @Override
-                    public void accept(List<WordEntity> wordEntities) throws Throwable {
+                    public void onSubscribe(@NonNull Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull List<WordEntity> wordEntities) {
                         lstWords.setValue(wordEntities);
                     }
-                })
-        );
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        error.setValue(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
