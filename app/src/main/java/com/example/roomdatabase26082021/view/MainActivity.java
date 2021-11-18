@@ -28,24 +28,25 @@ public class MainActivity extends AppCompatActivity {
         mWordViewModel.getWords().observe(this, new Observer<List<WordEntity>>() {
             @Override
             public void onChanged(List<WordEntity> wordEntities) {
-                Log.d("BBB",wordEntities.size() + "");
-                mWordViewModel.compositeDisposable.dispose();
+                Log.d("BBB",wordEntities.toString() + "");
             }
         });
 
-        mWordViewModel.getIdInsert().observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(Long aLong) {
-                Log.d("BBB","Id insert " + aLong);
-            }
-        });
+//        mWordViewModel.getIdInsert().observe(this, new Observer<Long>() {
+//            @Override
+//            public void onChanged(Long aLong) {
+//                Log.d("BBB","Id insert " + aLong);
+//            }
+//        });
 
         mWordViewModel.queryListWords();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mWordViewModel.insertWord(new WordEntity("Four","Bốn"));
-            }
-        },2000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mWordViewModel.insertWord(new WordEntity("Four","Bốn"));
+//            }
+//        },2000);
+
+        mWordViewModel.updateWord(true,20);
     }
 }

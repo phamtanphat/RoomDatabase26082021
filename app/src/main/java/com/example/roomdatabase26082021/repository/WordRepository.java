@@ -10,6 +10,7 @@ import com.example.roomdatabase26082021.database.entities.WordEntity;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 
@@ -26,5 +27,9 @@ public class WordRepository {
 
     public Maybe<Long> insertWord(WordEntity wordEntity){
         return wordDao.insertWord(wordEntity);
+    }
+
+    public Completable updateWord(boolean memorized , long id){
+        return wordDao.update(memorized,id);
     }
 }

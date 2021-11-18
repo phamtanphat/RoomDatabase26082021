@@ -54,4 +54,14 @@ public class WordEntity {
     public void setIsMemorized(int isMemorized) {
         this.isMemorized = isMemorized;
     }
+
+    @Override
+    public String toString() {
+        return "WordEntity{" +
+                "id=" + id +
+                ", en='" + en + '\'' +
+                ", vn='" + vn + '\'' +
+                ", isMemorized=" + isMemorized +
+                '}';
+    }
 }

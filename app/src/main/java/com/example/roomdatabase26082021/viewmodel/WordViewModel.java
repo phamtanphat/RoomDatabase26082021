@@ -1,6 +1,7 @@
 package com.example.roomdatabase26082021.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -14,6 +15,7 @@ import com.example.roomdatabase26082021.repository.WordRepository;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.MaybeObserver;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -93,6 +95,28 @@ public class WordViewModel extends AndroidViewModel {
                     @Override
                     public void onComplete() {
 
+                    }
+                });
+    }
+
+    public void updateWord(boolean memorized , long id) {
+        wordRepository.updateWord(memorized,id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("BBB","thành công");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d("BBB",e.getMessage());
                     }
                 });
     }
