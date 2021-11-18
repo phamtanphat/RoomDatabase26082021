@@ -44,8 +44,8 @@ public class WordViewModel extends AndroidViewModel {
         return idInsert;
     }
 
-    public void queryListWords() {
-        wordRepository.getListWords()
+    public void queryListWords(int currentPage, int countItem) {
+        wordRepository.getListWords(currentPage, countItem)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toObservable()
@@ -101,6 +101,27 @@ public class WordViewModel extends AndroidViewModel {
 
     public void updateWord(boolean memorized , long id) {
         wordRepository.updateWord(memorized,id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("BBB","thành công");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d("BBB",e.getMessage());
+                    }
+                });
+    }
+    public void deleteWord(long id) {
+        wordRepository.deleteWord(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {

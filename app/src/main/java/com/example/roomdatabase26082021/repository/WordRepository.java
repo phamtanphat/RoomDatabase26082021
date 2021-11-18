@@ -21,8 +21,8 @@ public class WordRepository {
         wordDao = WordDatabase.createDatabase(application).wordDao();
     }
 
-    public Flowable<List<WordEntity>> getListWords(){
-        return wordDao.getListWords();
+    public Flowable<List<WordEntity>> getListWords(int currentPage, int countItem){
+        return wordDao.getListWords(currentPage,countItem);
     }
 
     public Maybe<Long> insertWord(WordEntity wordEntity){
@@ -31,5 +31,8 @@ public class WordRepository {
 
     public Completable updateWord(boolean memorized , long id){
         return wordDao.update(memorized,id);
+    }
+    public Completable deleteWord(long id){
+        return wordDao.delete(id);
     }
 }

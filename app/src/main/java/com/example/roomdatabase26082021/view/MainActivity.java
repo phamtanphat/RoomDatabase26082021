@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        mWordViewModel.queryListWords();
+        mWordViewModel.queryListWords(3,1);
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        },2000);
 
-        mWordViewModel.updateWord(true,20);
+//        mWordViewModel.updateWord(true,20);
+        mWordViewModel.deleteWord(3);
     }
 }
